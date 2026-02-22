@@ -30,6 +30,17 @@ export function initFiltering(elements, indexes) {
         }
 
         // @todo: #4.5 — отфильтровать данные используя компаратор
-        return data.filter(row => compare(row, state));
+        return data.filter(row => compare(row, state)).filter(row => totalFilter (row.total, state.totalFrom, state.totalTo));
     }
+}
+
+function totalFilter (total, totalFrom, totalTo) {
+
+    if (total <= totalFrom && totalFrom != ""){
+        return false
+    }
+    if (total >= totalTo && totalTo!= ""){
+        return false
+    }
+    return true
 }
