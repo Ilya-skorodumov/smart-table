@@ -11,11 +11,11 @@ import {initPagination} from "./components/pagination.js"
 import {initSorting} from "./components/sorting.js"
 import {initFiltering} from "./components/filtering.js"
 import {initSearching} from "./components/searching.js"
-// @todo: подключение
+// Подключение
 
 
 // Исходные данные используемые в render()
-const api = initData(sourceData); //const {data, ...indexes} = initData(sourceData);
+const api = initData(sourceData);
 
 
 /**
@@ -24,8 +24,8 @@ const api = initData(sourceData); //const {data, ...indexes} = initData(sourceDa
  */
 function collectState() {
     const state = processFormData(new FormData(sampleTable.container));
-    const rowsPerPage = parseInt(state.rowsPerPage);    // приведём количество страниц к числу
-    const page = parseInt(state.page ?? 1);                // номер страницы по умолчанию 1 и тоже число
+    const rowsPerPage = parseInt(state.rowsPerPage);                                    // приведём количество страниц к числу
+    const page = parseInt(state.page ?? 1);                                             // номер страницы по умолчанию 1 и тоже число
 
     return {
     ...state,
@@ -40,16 +40,8 @@ function collectState() {
  * @param {HTMLButtonElement?} action
  */
 async function render(action) {
-    let state = collectState();// состояние полей из таблицы
-    let query = {}; // здесь будут формироваться параметры запроса
-
-    /*result = applySearching(result, state, action);
-
-    result = applyFiltering(result, state, action);
-
-    result = applySorting(result, state, action);
-
-    result = applyPagination(result, state, action);*/
+    let state = collectState();                                                         // состояние полей из таблицы
+    let query = {};                                                                     // здесь будут формироваться параметры запроса
 
     query = applySearching(query, state, action);
 
@@ -57,11 +49,12 @@ async function render(action) {
 
     query = applySorting(query, state, action);
 
-    query = applyPagination(query, state, action); // обновляем query
+    query = applyPagination(query, state, action);
 
-    const { total, items } = await api.getRecords(query) // запрашиваем данные с собранными параметрами
+    const { total, items } = await api.getRecords(query)                                // запрашиваем данные с собранными параметрами
 
-    updatePagination(total, query); // перерисовываем пагинатор
+    updatePagination(total, query);                                                     // перерисовываем пагинатор
+
     sampleTable.render(items)
 }
 
@@ -72,11 +65,11 @@ const sampleTable = initTable({
     after: ['pagination']
 }, render);
 
-// @todo: инициализация
+// Инициализация
 
 const { applyPagination, updatePagination } = initPagination(
-    sampleTable.pagination.elements,             // передаём сюда элементы пагинации, найденные в шаблоне
-    (el, page, isCurrent) => {                    // и колбэк, чтобы заполнять кнопки страниц данными
+    sampleTable.pagination.elements,                                                    // передаём сюда элементы пагинации, найденные в шаблоне
+    (el, page, isCurrent) => {                                                          // и колбэк, чтобы заполнять кнопки страниц данными
         const input = el.querySelector('input');
         const label = el.querySelector('span');
         input.value = page;
@@ -86,19 +79,17 @@ const { applyPagination, updatePagination } = initPagination(
     }
 );
 
-const applySorting = initSorting([        // Нам нужно передать сюда массив элементов, которые вызывают сортировку, чтобы изменять их визуальное представление
+const applySorting = initSorting([                                                      // Нам нужно передать сюда массив элементов, которые вызывают сортировку, чтобы изменять их визуальное представление
     sampleTable.header.elements.sortByDate,
     sampleTable.header.elements.sortByTotal
 ]);
 
 const {applyFiltering, updateIndexes} = initFiltering(sampleTable.filter.elements, {});
 
-const applySearching = initSearching ('search')
-;
-
-
+const applySearching = initSearching ('search');
 
 const appRoot = document.querySelector('#app');
+
 appRoot.appendChild(sampleTable.container);
 
 async function init(){

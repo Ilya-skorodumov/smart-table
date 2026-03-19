@@ -1,8 +1,5 @@
-import {rules, createComparison, defaultRules} from "../lib/compare.js";
-
-
 export function initSearching(searchField) {
-    // @todo: #5.1 — настроить компаратор
+
 
     return (query, state, action) => {                              // result заменили на query
         return state[searchField] ? Object.assign({}, query, {      // проверяем, что в поле поиска было что-то введено
@@ -10,15 +7,3 @@ export function initSearching(searchField) {
         }) : query;                                                 // если поле с поиском пустое, просто возвращаем query без изменений
     }
 }
-
-/* export function initSearching(searchField) {
-    // @todo: #5.1 — настроить компаратор
-    const compare = createComparison([defaultRules[1]], [rules.searchMultipleFields (searchField, ['date', 'customer', 'seller'], false)]);
-
-
-    return (data, state, action) => {
-
-        // @todo: #5.2 — применить компаратор
-        return data.filter(row => compare(row, state))
-    }
-} */
